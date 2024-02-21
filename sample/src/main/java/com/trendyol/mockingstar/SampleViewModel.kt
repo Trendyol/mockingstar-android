@@ -3,7 +3,6 @@ package com.trendyol.mockingstar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.annotations.SerializedName
-import com.trendyol.mockingstar.MockingStarInterceptor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,8 +22,10 @@ class SampleViewModel : ViewModel() {
 	private var _searchResults = MutableStateFlow<List<Repository>>(emptyList())
 	val searchResults = _searchResults.asStateFlow()
 
+	private var _mockingEnabled = MutableStateFlow(false)
+	val mockingEnabled = _mockingEnabled
+
 	private val client = OkHttpClient.Builder()
-		.addInterceptor(MockingStarInterceptor())
 		.addNetworkInterceptor(HttpLoggingInterceptor().apply {
 			level = HttpLoggingInterceptor.Level.BODY
 		})
@@ -36,14 +37,34 @@ class SampleViewModel : ViewModel() {
 		.addConverterFactory(GsonConverterFactory.create())
 		.build()
 		.create(GithubService::class.java)
+	private val clientWithMockingstar = OkHttpClient.Builder()
+		.addInterceptor(MockingStarInterceptor())
+		.addNetworkInterceptor(HttpLoggingInterceptor().apply {
+			level = HttpLoggingInterceptor.Level.BODY
+		})
+		.build()
+
+	private val serviceWithMockingStar = Retrofit.Builder()
+		.client(clientWithMockingstar)
+		.baseUrl(URL)
+		.addConverterFactory(GsonConverterFactory.create())
+		.build()
+		.create(GithubService::class.java)
 
 	fun updateInput(text: String) {
 		_inputText.value = text
 	}
 
+	fun toggleMocking() {
+		_mockingEnabled.update { it.not() }
+	}
+
 	fun search() {
 		viewModelScope.launch {
-			val response = service.repositories(_inputText.value)
+			if (_inputText.value.isEmpty()) return@launch
+			val response = if (mockingEnabled.value) {
+				serviceWithMockingStar.repositories(_inputText.value)
+			} else service.repositories(_inputText.value)
 			val results = response.items.orEmpty().map {
 				Repository(
 					name = it?.fullName.orEmpty(),

@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -52,8 +54,26 @@ class SampleActivity : ComponentActivity() {
 fun SampleScreen(viewModel: SampleViewModel) {
 	val inputText = viewModel.inputText.collectAsStateWithLifecycle()
 	val searchResults = viewModel.searchResults.collectAsStateWithLifecycle()
+	val mockingEnabled = viewModel.mockingEnabled.collectAsStateWithLifecycle()
 	Scaffold(
-		topBar = { TopAppBar(title = { Text("Github Search", fontWeight = FontWeight.Bold) }) }
+		topBar = {
+			TopAppBar(title = {
+				Row(
+					horizontalArrangement = Arrangement.SpaceBetween,
+					verticalAlignment = Alignment.CenterVertically,
+					modifier = Modifier.fillMaxWidth()
+				) {
+					Text("Github Search", fontWeight = FontWeight.Bold)
+					Button(
+						onClick = { viewModel.toggleMocking() },
+						modifier = Modifier.padding(end = 12.dp)
+					) {
+						val text = if (mockingEnabled.value) "Disable" else "Enable"
+						Text("$text Mockingstar")
+					}
+				}
+			})
+		}
 	) { padding ->
 		Column(
 			modifier = Modifier
@@ -73,7 +93,16 @@ fun SampleScreen(viewModel: SampleViewModel) {
 						unfocusedIndicatorColor = Color.Transparent
 					),
 					value = inputText.value,
-					onValueChange = viewModel::updateInput
+					onValueChange = viewModel::updateInput,
+					trailingIcon = {
+						if (inputText.value.isNotEmpty()) {
+							Icon(
+								imageVector = Icons.Default.Clear,
+								contentDescription = "Clear text",
+								modifier = Modifier.clickable { viewModel.updateInput("") }
+							)
+						}
+					}
 				)
 				Button(onClick = { viewModel.search() }) {
 					Text("Search")
