@@ -12,7 +12,10 @@ import okio.Buffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
-class MockingStarInterceptor : Interceptor {
+class MockingStarInterceptor(
+	private val params: MockUrlParams = MockUrlParams(),
+	private val header: Map<String, String> = emptyMap(),
+) : Interceptor {
 
 	@OptIn(ExperimentalSerializationApi::class)
 	override fun intercept(chain: Interceptor.Chain): Response {
@@ -34,16 +37,14 @@ class MockingStarInterceptor : Interceptor {
 		val requestString = json.encodeToString(requestBody)
 
 		val newRequest = originalRequest.newBuilder()
-			.url(MOCK_URL.toHttpUrl())
+			.url(params.buildMockUrl().toHttpUrl())
 			.addHeader("disableLiveEnvironment", "false")
 			.addHeader("Content-Type", "application/json")
+			.also { builder ->
+				header.entries.forEach { builder.addHeader(it.key, it.value) }
+			}
 			.post(requestString.toRequestBody("application/json".toMediaType())).build()
 
 		return chain.proceed(newRequest)
 	}
-
-	companion object {
-		const val MOCK_URL = "http://10.0.2.2:8008/mock"
-	}
-
 }
