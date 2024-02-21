@@ -21,5 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MockingStarAndroid"
 include(":sample")
-include(":mockingstar-core")
 include(":mockingstar")

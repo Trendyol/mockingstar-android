@@ -1,4 +1,3 @@
-
 plugins {
 	id("java-library")
 	alias(libs.plugins.jetbrainsKotlinJvm)
@@ -17,13 +16,24 @@ dependencies {
 }
 
 publishing {
-	publications {
-		create<MavenPublication>("maven") {
-			groupId = "com.trendyol.mockingstar"
-			artifactId = "library"
-			version = "1.0.0"
 
-			from(components["java"])
+	repositories {
+		maven {
+			val releasesRepoUrl = layout.buildDirectory.dir("repos/releases")
+			val snapshotsRepoUrl = layout.buildDirectory.dir("repos/snapshots")
+			url = uri(
+				if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+			)
+		}
+	}
+	publications {
+		create<MavenPublication>("release") {
+			groupId = "com.trendyol.mockingstar"
+			artifactId = "mockingstar"
+			version = "1.0.0"
+			afterEvaluate {
+				from(components["java"])
+			}
 		}
 	}
 }
