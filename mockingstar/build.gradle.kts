@@ -17,15 +17,6 @@ dependencies {
 
 publishing {
 
-	repositories {
-		maven {
-			val releasesRepoUrl = layout.buildDirectory.dir("repos/releases")
-			val snapshotsRepoUrl = layout.buildDirectory.dir("repos/snapshots")
-			url = uri(
-				if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-			)
-		}
-	}
 	publications {
 		create<MavenPublication>("release") {
 			groupId = "com.trendyol.mockingstar"
