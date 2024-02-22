@@ -32,7 +32,7 @@ repositories {
 **Add the library**
 
 ```gradle
-implementation("com.trendyol.mockingstar:mockingstar:{latest-version}")
+implementation("com.github.Trendyol:mockingstar-android:{latest-version}")
 ```
 
 You can check the latest version from the Releases
