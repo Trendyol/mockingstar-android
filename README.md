@@ -1,5 +1,8 @@
 # Mocking Star 🌟
 
+[![](https://jitpack.io/v/Trendyol/mockingstar-android.svg)](https://jitpack.io/#Trendyol/mockingstar-android)
+
+
 Mocking Star is a powerful request mocking tool designed to simplify the process of http request mocking, network debugging, and using UI tests for your mobile applications.  With just a single line of code, you can use Mocking Star in your project.
 
 ![](/img/demo.gif)
