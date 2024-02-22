@@ -4,6 +4,16 @@ Mocking Star is a powerful request mocking tool designed to simplify the process
 
 ![](/img/demo.gif)
 
+### Key Features
+
+- **Mocking Requests**: Easily mock requests and test different cases with scenarios.
+- **Modifying Requests**: Modify intercepted requests to test different edge cases, allowing you to assess your application's performance under different conditions.
+- **Debugging Support**: Use Mocking Star to debug your network requests on your mac.
+- **UI Testing**: Integrate Mocking Star into your UI tests, creating a reliable and controlled testing environment to validate your mobile application's functionality.
+
+Mocking Star App -> [Mocking Star](https://github.com/Trendyol/mockingstar) <br>
+iOS Library -> [Mocking Star iOS Library](https://github.com/Trendyol/mockingstar-ios)
+
 ## Getting Started 🔥
 
 
