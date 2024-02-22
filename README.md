@@ -14,10 +14,6 @@ Mocking Star is a powerful request mocking tool designed to simplify the process
 Mocking Star App -> [Mocking Star](https://github.com/Trendyol/mockingstar) <br>
 iOS Library -> [Mocking Star iOS Library](https://github.com/Trendyol/mockingstar-ios)
 
-## Getting Started 🔥
-
-
-
 ## Installation
 
 Library is distributed through JitPack.
