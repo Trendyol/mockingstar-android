@@ -77,4 +77,6 @@ android:usesCleartextTraffic="true"
 to the `application` block in your `AndroidManifest.xml` to enable it.
 
 
+## License
 
+This library is released under the MIT license. See [LICENSE](LICENSE) for details.
