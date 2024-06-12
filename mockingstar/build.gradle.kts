@@ -21,7 +21,7 @@ publishing {
 		create<MavenPublication>("release") {
 			groupId = "com.trendyol.mockingstar"
 			artifactId = "mockingstar"
-			version = "1.0.0"
+			version = "1.0.1"
 			afterEvaluate {
 				from(components["java"])
 			}

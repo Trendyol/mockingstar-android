@@ -22,6 +22,7 @@ class MockingStarInterceptor(
 		val originalRequest = chain.request()
 
 		val buffer = Buffer()
+
 		originalRequest.body?.writeTo(buffer)
 
 		val contentType = originalRequest.body?.contentType()
@@ -31,7 +32,7 @@ class MockingStarInterceptor(
 			method = originalRequest.method,
 			url = originalRequest.url.toString(),
 			headers = originalRequest.headers.toMap(),
-			body = buffer.readString(charset),
+			body = buffer.readString(charset).takeIf { it.isNotEmpty() },
 		)
 		val json = Json { explicitNulls = false }
 		val requestString = json.encodeToString(requestBody)
