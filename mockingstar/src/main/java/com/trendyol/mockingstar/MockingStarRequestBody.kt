@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 internal class MockingStarRequestBody(
 	val method: String,
 	val url: String,
-	val headers: Map<String, String>,
+	val header: Map<String, String>,
 	val body: String?,
 )

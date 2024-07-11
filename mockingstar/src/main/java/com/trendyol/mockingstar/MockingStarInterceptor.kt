@@ -11,13 +11,15 @@ import okhttp3.Response
 import okio.Buffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 class MockingStarInterceptor(
 	private val params: MockUrlParams = MockUrlParams(),
 	private val header: Map<String, String> = emptyMap(),
 ) : Interceptor {
 
-	@OptIn(ExperimentalSerializationApi::class)
+	@OptIn(ExperimentalSerializationApi::class, ExperimentalEncodingApi::class)
 	override fun intercept(chain: Interceptor.Chain): Response {
 		val originalRequest = chain.request()
 
@@ -26,13 +28,18 @@ class MockingStarInterceptor(
 		originalRequest.body?.writeTo(buffer)
 
 		val contentType = originalRequest.body?.contentType()
-		val charset: Charset = contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
+		val charset: Charset =
+			contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
+
+		val bodyString = buffer.readString(charset)
+			.takeIf { it.isNotEmpty() }
+			?.let { Base64.UrlSafe.encode(it.toByteArray()) }
 
 		val requestBody = MockingStarRequestBody(
 			method = originalRequest.method,
 			url = originalRequest.url.toString(),
-			headers = originalRequest.headers.toMap(),
-			body = buffer.readString(charset).takeIf { it.isNotEmpty() },
+			header = originalRequest.headers.toMap(),
+			body = bodyString
 		)
 		val json = Json { explicitNulls = false }
 		val requestString = json.encodeToString(requestBody)
