@@ -46,7 +46,6 @@ class MockingStarInterceptor(
 
 		val newRequest = originalRequest.newBuilder()
 			.url(params.buildMockUrl().toHttpUrl())
-			.addHeader("disableLiveEnvironment", "false")
 			.addHeader("Content-Type", "application/json")
 			.also { builder ->
 				header.entries.forEach { builder.addHeader(it.key, it.value) }
