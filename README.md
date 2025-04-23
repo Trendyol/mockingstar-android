@@ -1,3 +1,5 @@
+
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Trendyol/mockingstar-android/badge)](https://scorecard.dev/viewer/?uri=github.com/Trendyol/mockingstar-android)
 # Mocking Star 🌟
 
 [![](https://jitpack.io/v/Trendyol/mockingstar-android.svg)](https://jitpack.io/#Trendyol/mockingstar-android)
