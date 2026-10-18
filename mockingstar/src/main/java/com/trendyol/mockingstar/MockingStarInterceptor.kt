@@ -33,7 +33,7 @@ class MockingStarInterceptor(
 
 		val bodyString = buffer.readString(charset)
 			.takeIf { it.isNotEmpty() }
-			?.let { Base64.UrlSafe.encode(it.toByteArray()) }
+			?.let { Base64.Default.encode(it.toByteArray()) }
 
 		val requestBody = MockingStarRequestBody(
 			method = originalRequest.method,
